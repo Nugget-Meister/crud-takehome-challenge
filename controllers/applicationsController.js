@@ -1,11 +1,47 @@
-const express = require("express")
+const express = require('express')
 
-const applications = express.Router()
+const applications = express.Router();
+
+const { 
+    getAllApplications, 
+    getApplicationById,
+    createApplication,
+    updateApplication,
+    deleteApplication
+ } = require("../queries/jobApplicationsQueries")
 
 applications.get("/", (request, response) => {
-    response.status(200).json({
-        
-    })
+
+    try{
+        let applications = getAllApplications()
+        response.status(200).json({
+            data : applications
+        })
+    }catch(err){
+        response.status(404).json({
+            error: error
+        })
+    }
 })
 
-export default { applications }
+applications.get("/:id", (req, res) => {
+    let { id } = req.params
+
+    try{}catch(err){}
+    let application = getApplicationById(id)
+
+})
+
+applications.post("/", (req, res) => {
+
+})
+
+applications.put('/:id', (req, res) => {
+
+})
+
+applications.delete("/:id", (req, res) => {
+
+})
+
+module.exports =  applications 

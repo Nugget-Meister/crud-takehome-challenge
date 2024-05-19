@@ -1,15 +1,18 @@
-const applicationsController = require('./controllers/applicationsController')
-
+const cors = require('cors')
 const express = require('express');
 
 const app = express();
 
 // TODO: Add application-wide middleware
+
 app.use(cors());
+app.use(express.json())
 
 // TODO: Add controller(s)
 
-app.use("/applications", applicationsController)
+const applicationsController = require('./controllers/applicationsController')
+
+app.use("/applications", applicationsController);
 
 // TODO: Implement health check route
 
