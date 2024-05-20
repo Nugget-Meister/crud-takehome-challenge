@@ -8,18 +8,19 @@ const {
     createApplication,
     updateApplication,
     deleteApplication
- } = require("../queries/jobApplicationsQueries")
+ } = require("../queries/jobApplicationsQueries");
+const app = require('../app');
 
 applications.get("/", (request, response) => {
 
     try{
         let applications = getAllApplications()
         response.status(200).json({
-            data : applications
+            data: applications
         })
     }catch(err){
         response.status(404).json({
-            error : err
+            error: err
         })
     }
 })
@@ -27,14 +28,20 @@ applications.get("/", (request, response) => {
 applications.get("/:id", (req, res) => {
     let { id } = req.params
 
+    if(!Number.isInteger(id)){
+        res.status(415).json({
+            errror: "Unsupported media type."
+        })
+    }
+
     try{
         let application = getApplicationById(id)
         res.status(200).json({
-            data : application
+            data: application
         })
     }catch(err){
         res.status(404).json({
-            error : err
+            error: err
         })
     }
 
@@ -43,6 +50,9 @@ applications.get("/:id", (req, res) => {
 applications.post("/", (req, res) => {
  try {
     let application = createApplication(req.body)
+    res.status(201).json({
+        data: application
+    })
 
  } catch (err){
     res.status(500).json({
@@ -55,14 +65,23 @@ applications.put('/:id', (req, res) => {
     let { id } = req.params;
     try {
         let application = updateApplication(id, req.body)
-        res.status(200)
-    } catch(err){}
+        res.status(200).json({
+            data: application
+        })
+    } catch(err){
+        res.status(404).json({
+            error: err
+        })
+    }
     })
 
 applications.delete("/:id", (req, res) => {
     let { id } = req.params
     try{
         let application = deleteApplication(id)
+        res.status(200).json({
+            data: application
+        })
     }catch(err){
         res.status(404).json({
             error: err
